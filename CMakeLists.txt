@@ -10,6 +10,7 @@ qt_standard_project_setup(REQUIRES 6.8)
 
 qt_add_executable(appSeekNEat
     main.cpp
+    connection/connection.cpp
 )
 
 qt_add_qml_module(appSeekNEat
@@ -33,6 +34,12 @@ set_target_properties(appSeekNEat PROPERTIES
 target_link_libraries(appSeekNEat
     PRIVATE Qt6::Quick
 )
+
+find_package(CURL REQUIRED)
+target_link_libraries(appSeekNEat PRIVATE CURL::libcurl)
+
+find_package(Qt6Keychain REQUIRED)
+target_link_libraries(appSeekNEat PRIVATE qt6keychain)
 
 include(GNUInstallDirs)
 install(TARGETS appSeekNEat

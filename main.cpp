@@ -1,6 +1,9 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
+#include "debug.hpp"
+#include "connection/connection.hpp"
+
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
@@ -13,6 +16,13 @@ int main(int argc, char *argv[])
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
     engine.loadFromModule("SeekNEat", "Main");
+
+    SNEconnection conn;
+    conn.init();
+    SNEdebug(1, conn.login("midair", "pwdpwdpwd"));
+    SNEdebug(1, conn.signup("midair@midair.dev", "midair", "pwdpwdpwd"));
+
+    conn.cleanup();
 
     return app.exec();
 }
