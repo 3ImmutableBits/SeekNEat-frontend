@@ -30,8 +30,8 @@ ApplicationWindow {
             property color textHoverColor: "white"
             property color textPressedColor: "white"
 
-            width: 120 * scaleFactor
-            height: 45 * scaleFactor
+            width: 120
+            height: 45
             radius: 10
             border.color: borderColor
             border.width: 2
@@ -50,7 +50,7 @@ ApplicationWindow {
             Text {
                 id: buttonText
                 anchors.centerIn: parent
-                font.pixelSize: 18 * scaleFactor
+                font.pixelSize: 18
                 font.bold: true
 
                 // Animate text color

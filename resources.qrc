@@ -1,7 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>resources/imgtitle.png</file>
-        <file>resources/circleimg.png</file>
-        <file>resources/searchicon.png</file>
-    </qresource>
-</RCC>
