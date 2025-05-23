@@ -2,19 +2,20 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtLocation
+import QtPositioning
 
 ApplicationWindow {
+
     visible: true
     width: 640
     height: 480
+
     title: "SeekNEat"
 
     function check_login(){
         return true;
     }
 
-
-    // Custom button component
     Component {
         id: customButtonComponent
 
@@ -29,20 +30,34 @@ ApplicationWindow {
             property color textHoverColor: "white"
             property color textPressedColor: "white"
 
-            width: 120
-            height: 45
+            width: 120 * scaleFactor
+            height: 45 * scaleFactor
             radius: 10
-            color: mouseArea.pressed ? pressedColor : (mouseArea.containsMouse ? hoverColor : normalColor)
             border.color: borderColor
             border.width: 2
+
+            // Animate background color
+            Behavior on color {
+                ColorAnimation { duration: 200; easing.type: Easing.InOutQuad }
+            }
+            // Animate border color in case you want it animated too
+            Behavior on border.color {
+                ColorAnimation { duration: 200; easing.type: Easing.InOutQuad }
+            }
 
             signal clicked()
 
             Text {
                 id: buttonText
                 anchors.centerIn: parent
-                font.pixelSize: 18
+                font.pixelSize: 18 * scaleFactor
                 font.bold: true
+
+                // Animate text color
+                Behavior on color {
+                    ColorAnimation { duration: 200; easing.type: Easing.InOutQuad }
+                }
+
                 color: mouseArea.pressed ? textPressedColor : (mouseArea.containsMouse ? textHoverColor : textColor)
             }
 
@@ -51,10 +66,22 @@ ApplicationWindow {
                 anchors.fill: parent
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
-                onClicked: root.clicked()
+
+                // Set background color reactively with animation
+                onPressed: root.color = root.pressedColor
+                onReleased: {
+                    root.color = mouseArea.containsMouse ? root.hoverColor : root.normalColor
+                    if (mouseArea.containsMouse) root.clicked()
+                }
+                onEntered: if (!mouseArea.pressed) root.color = root.hoverColor
+                onExited: if (!mouseArea.pressed) root.color = root.normalColor
             }
+
+            // Initialize color to normal on component creation
+            Component.onCompleted: root.color = normalColor
         }
     }
+
 
     StackView {
         id: stackView
@@ -68,6 +95,29 @@ ApplicationWindow {
 
         Item {
             anchors.fill: parent
+
+            Image  {
+
+                source: "file:///C:/Users/ancap/OneDrive/Pictures/circleimg.png"
+                width: 340
+                height: 340
+                fillMode: Image.PreserveAspectFit
+                anchors.top: parent.top
+                anchors.horizontalCenter: parent.left
+                anchors.topMargin: 10
+            }
+
+            Image  {
+
+                source: "file:///C:/Users/ancap/OneDrive/Pictures/circleimg.png"
+                width: 340
+                height: 340
+                fillMode: Image.PreserveAspectFit
+                anchors.top: parent.top
+                anchors.horizontalCenter: parent.right
+                anchors.topMargin: 10
+
+            }
 
             Image {
                 source: "file:///C:/Users/ancap/OneDrive/Pictures/imgtitle.png"
@@ -182,7 +232,80 @@ ApplicationWindow {
         }
     }
 
-    // Meal page
+
+    // Create page
+
+    Component {
+
+        id: createPageComponenet
+
+        Item {
+
+            anchors.fill: parent
+
+            Label {
+                text: "Create Meal"
+                font.pixelSize: 40
+                font.bold: true
+                color: "#00b300"
+                anchors.top: parent.top
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.topMargin: 20
+            }
+
+            Loader {
+                id: backToHomeButtonLoader
+                sourceComponent: customButtonComponent
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.topMargin: 10
+                anchors.leftMargin: 20
+                onLoaded: {
+                    item.text = "Home"
+                    item.width = 120
+                    item.height = 45
+                    item.normalColor = "#607d8b"
+                    item.hoverColor = "#455a64"
+                    item.pressedColor = "#37474f"
+                    item.borderColor = "#263238"
+                    item.textColor = "white"
+                    item.textHoverColor = "white"
+                    item.textPressedColor = "white"
+                    item.clicked.connect(() => {
+                        stackView.pop()
+                    })
+                }
+            }
+            Column {
+                anchors.centerIn: parent
+                spacing: 20
+
+
+
+                TextField {
+                    id: mealNameTextBox
+                    placeholderText: "Enter your Meal Name"
+                    width: 470
+                    height: 50
+                    font.pixelSize: 18
+                    color: "black"
+                    placeholderTextColor: "#9e9e9e"
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignVCenter
+                    leftPadding: 12
+                    rightPadding: 12
+
+                    background: Rectangle {
+                        radius: 8
+                        border.color: activeFocus ? "#4CAF50" : "#BDBDBD"
+
+                        border.width: 2
+                        color: "#f5f5f5"
+                    }
+                }
+            }
+        }
+    }
 
     // Dashboard page
     Component {
@@ -191,8 +314,40 @@ ApplicationWindow {
         Item {
             anchors.fill: parent
 
+            TextField {
+                id: mapTextBox
+                placeholderText: "Search Location"
+                width: 470
+                height: 50
+                font.pixelSize: 18
+                color: "black"
+                placeholderTextColor: "#9e9e9e"
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+                anchors.centerIn: parent
+                leftPadding: 12
+                rightPadding: 12
+
+                background: Rectangle {
+                    radius: 8
+                    border.color: mapTextBox.activeFocus ? "#4CAF50" : "#BDBDBD"
+                    border.width: 2
+                    color: "#f5f5f5"
+                }
+            }
+
+            Image {
+                source: "file:///C:/Users/ancap/OneDrive/Pictures/searchicon.png"
+                width: 200
+                height: 200
+                fillMode: Image.PreserveAspectFit
+                anchors.top: parent.top
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.topMargin: 40
+            }
+
             Label {
-                text: "Welcome to the Dashboard!"
+                text: "Search Locations"
                 font.pixelSize: 22
                 color: "#2e7d32"
                 anchors.top: parent.top
@@ -226,15 +381,17 @@ ApplicationWindow {
                 }
             }
 
+
+
             Loader {
-                id: mapButtonLoader
+                id: createButtonLoader
                 sourceComponent: customButtonComponent
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.topMargin: 10
                 anchors.leftMargin: 200
                 onLoaded: {
-                    item.text = "Map"
+                    item.text = "Create Meal"
                     item.width = 120
                     item.height = 45
                     item.normalColor = "#607d8b"
@@ -245,7 +402,7 @@ ApplicationWindow {
                     item.textHoverColor = "white"
                     item.textPressedColor = "white"
                     item.clicked.connect(() => {
-                        console.log("Open Map");
+                        stackView.push(createPageComponenet);
                     })
                 }
             }
@@ -255,10 +412,10 @@ ApplicationWindow {
                 sourceComponent: customButtonComponent
                 anchors.top: parent.top
                 anchors.left: parent.left
-                anchors.topMargin: 10
-                anchors.leftMargin: 200
+                anchors.topMargin: 300
+                anchors.leftMargin: 900
                 onLoaded: {
-                    item.text = "Find Meals"
+                    item.text = "Search"
                     item.width = 120
                     item.height = 45
                     item.normalColor = "#607d8b"
