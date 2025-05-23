@@ -1,9 +1,27 @@
 #pragma once
 #include <string>
 #include <curl/curl.h>
+#include <stdint.h>
+#include <vector>
 
 #define LOGIN_ENDPOINT "http://192.168.97.154:4000/api/login"
 #define SIGNUP_ENDPOINT "http://192.168.97.154:4000/api/register"
+#define NEWMEAL_ENDPOINT "http://192.168.97.154:4000/api/new_meal"
+#define DELETEMEAL_ENDPOINT "http://192.168.97.154:4000/api/delete_meal"
+#define JOINMEAL_ENDPOINT "http://192.168.97.154:4000/api/join_meal"
+#define FETCHMEAL_ENDPOINT "http://192.168.97.154:4000/api/fetch_meal"
+
+struct Meal {
+    int hostID;
+    std::string name;
+    std::string desc;
+    std::string price;
+    long long timestamp;
+    int availSpots;
+    int occupiedSpots;
+    double latitude;
+    double longitude;
+};
 
 class SNEconnection
 {
@@ -13,19 +31,29 @@ class SNEconnection
         std::string tkn;
     
     public:
+
         // @brief Initializes the connection
-        // @returns result
         bool init();
 
         // @brief Closes the connection, should be run upon app close
         void cleanup();
 
         // @brief Sends account credentials to the server
-        // @returns JSON result data
         std::string login(std::string username, std::string pwd);
 
         // @brief Sends credentials to the server and creates an account
-        // @returns JSON result data
         std::string signup(std::string email, std::string username, std::string pwd);
+
+        // @brief Creates a new meal
+        std::string createMeal(Meal m);
+
+        // @brief Deletes a meal
+        std::string deleteMeal(uint32_t id);
+
+        // @brief Joins another user's meal
+        std::string joinMeal(uint32_t id);
+
+        // @brief Fetches all meals from the server
+        std::vector<Meal> fetchMeals(std::string query);
     
 }; // class SNEconnection
