@@ -18,7 +18,7 @@ qt_add_qml_module(apptestqa
     QML_FILES
         Main.qml
         RESOURCES project.pro
-        RESOURCES resources.qrc
+        RESOURCES
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
