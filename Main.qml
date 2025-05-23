@@ -98,7 +98,7 @@ ApplicationWindow {
 
             Image  {
 
-                source: "file:///C:/Users/ancap/OneDrive/Pictures/circleimg.png"
+                source: "qrc:/resources/circleimg.png"
                 width: 340
                 height: 340
                 fillMode: Image.PreserveAspectFit
@@ -109,7 +109,7 @@ ApplicationWindow {
 
             Image  {
 
-                source: "file:///C:/Users/ancap/OneDrive/Pictures/circleimg.png"
+                source: "qrc:/resources/circleimg.png"
                 width: 340
                 height: 340
                 fillMode: Image.PreserveAspectFit
@@ -120,7 +120,7 @@ ApplicationWindow {
             }
 
             Image {
-                source: "file:///C:/Users/ancap/OneDrive/Pictures/imgtitle.png"
+                source: "qrc:/resources/imgtitle.png"
                 width: 200
                 height: 200
                 fillMode: Image.PreserveAspectFit
@@ -337,7 +337,7 @@ ApplicationWindow {
             }
 
             Image {
-                source: "file:///C:/Users/ancap/OneDrive/Pictures/searchicon.png"
+                source: "qrc:/resources/searchicon.png"
                 width: 200
                 height: 200
                 fillMode: Image.PreserveAspectFit

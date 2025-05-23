@@ -20,6 +20,7 @@ qt_add_qml_module(appSeekNEat
         Main.qml
         RESOURCES project.pro
         RESOURCES
+        RESOURCES resources.qrc
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

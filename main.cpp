@@ -2,8 +2,6 @@
 #include <QQmlApplicationEngine>
 
 #include "debug.hpp"
-#include "connection/connection.hpp"
-
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
