@@ -5,7 +5,6 @@ import QtQuick.Controls.Material 2.15
 import QtLocation 5.15
 import QtPositioning 5.15
 
-
 /*Main.qml*/
 
 ApplicationWindow {
@@ -16,11 +15,12 @@ ApplicationWindow {
 
     title: "SeekNEat"
 
-    function check_login() {
+    function check_login(){
         if(authController.text == "Successfully logged in") return true;
         return false;
     }
     Material.theme: Material.Dark
+
 
 
     Component {
@@ -37,7 +37,6 @@ ApplicationWindow {
             id: root
             property alias text: buttonText.text
             property color normalColor: "#33cc33"
-
             property color hoverColor: "#00994d"
             property color pressedColor: "#33ff99"
             property color borderColor: "#33ff99"
@@ -108,10 +107,41 @@ ApplicationWindow {
         id: loginPageComponent
 
         Item {
+            id: root
             anchors.fill: parent
 
-            Image  {
+            property real baseWidth: 800
+            property real baseHeight: 600
+            // Scale factor based on smaller dimension ratio
+            property real scaleFactor: Math.min(width / baseWidth, height / baseHeight)
 
+            function getGreeting() {
+                let hour = new Date().getHours();
+                if (hour >= 5 && hour < 12) {
+                    return "Good Morning!";
+                } else if (hour >= 12 && hour < 17) {
+                    return "Good Afternoon!";
+                } else if (hour >= 17 && hour < 21) {
+                    return "Good Evening!";
+                } else {
+                    return "Good Night!";
+                }
+            }
+
+            Label {
+                id: greetingLabel
+                text: getGreeting()
+                font.pixelSize: 26  ;
+                font.bold: true
+                color: "#00b300"
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.bottomMargin: 30  ;
+                anchors.leftMargin: 30  ;
+                Material.theme: Material.Dark
+            }
+
+            Image {
                 source: "qrc:/resources/circleimg.png"
                 width: 140
                 height: 140
@@ -121,8 +151,7 @@ ApplicationWindow {
                 anchors.topMargin: 10
             }
 
-            Image  {
-
+            Image {
                 source: "qrc:/resources/circleimg.png"
                 width: 140
                 height: 140
@@ -130,7 +159,6 @@ ApplicationWindow {
                 anchors.top: parent.top
                 anchors.horizontalCenter: parent.right
                 anchors.topMargin: 10
-
             }
 
             Image {
@@ -140,41 +168,44 @@ ApplicationWindow {
                 fillMode: Image.PreserveAspectFit
                 anchors.top: parent.top
                 anchors.horizontalCenter: parent.horizontalCenter
-                anchors.topMargin: 10
+                anchors.topMargin: 40
             }
 
-            Column {
+            ColumnLayout {
                 anchors.centerIn: parent
-                spacing: 20
+                spacing: 20  ;
+                Layout.fillHeight: true
+                Layout.fillWidth: true
 
-                Row {
-                    spacing: 10
-                    width: 470
-                    height: 50
+                // Username Row
+                RowLayout {
+                    spacing: 10  ;
+                    width: 470  ;
+                    height: 50  ;
 
                     Text {
                         text: "👤"
-                        font.pixelSize: 24
+                        font.pixelSize: 24  ;
                         verticalAlignment: Text.AlignVCenter
                     }
 
                     TextField {
                         id: nameTextBox
                         placeholderText: "Enter your username"
-                        width: 420
-                        height: 50
-                        font.pixelSize: 18
+                        Layout.fillWidth: true
+                        height: 50  ;
+                        font.pixelSize: 18  ;
                         color: "black"
-                        placeholderTextColor: "#9e9e9e"
+                        placeholderTextColor: "#000000"
                         horizontalAlignment: Text.AlignLeft
                         verticalAlignment: Text.AlignVCenter
-                        leftPadding: 12
-                        rightPadding: 12
+                        leftPadding: 12  ;
+                        rightPadding: 12  ;
 
                         background: Rectangle {
-                            radius: 8
-                            border.color: passwordTextBox.activeFocus ? "#3399ff" : "#3385ff"
-                            border.width: 2
+                            radius: 8  ;
+                            border.color: nameTextBox.activeFocus ? "#3399ff" : "#3385ff"
+                            border.width: 2  ;
                             color: "#3385ff"
                         }
 
@@ -184,11 +215,11 @@ ApplicationWindow {
                     }
                 }
 
-
-                Row {
-                    spacing: 10
-                    width: 470
-                    height: 50
+                // Email Row
+                RowLayout {
+                    spacing: 10  ;
+                    width: 470  ;
+                    height: 50  ;
 
                     Text {
                         text: "📧"
@@ -199,21 +230,16 @@ ApplicationWindow {
                     TextField {
                         id: emailTextBox
                         placeholderText: "Enter your email"
-                        width: 420  // Adjusted to fit within 470 total
-                        height: 50
-                        font.pixelSize: 18
-                       // echoMode: TextInput.Password
+                        Layout.fillWidth: true
+                        height: 50  ;
+                        font.pixelSize: 18  ;
                         color: "black"
-                        placeholderTextColor: "#9e9e9e"
-                        horizontalAlignment: Text.AlignLeft
-                        verticalAlignment: Text.AlignVCenter
-                        leftPadding: 12
-                        rightPadding: 12
+                        placeholderTextColor: "#000000"
 
                         background: Rectangle {
-                            radius: 8
-                            border.color: passwordTextBox.activeFocus ? "#3399ff" : "#3385ff"
-                            border.width: 2
+                            radius: 8  ;
+                            border.color: emailTextBox.activeFocus ? "#3399ff" : "#3385ff"
+                            border.width: 2  ;
                             color: "#3385ff"
                         }
 
@@ -223,8 +249,8 @@ ApplicationWindow {
                     }
                 }
 
-
-                Row {
+                // Password Row
+                RowLayout {
                     spacing: 10
                     width: 470
                     height: 50
@@ -238,12 +264,12 @@ ApplicationWindow {
                     TextField {
                         id: passwordTextBox
                         placeholderText: "Enter your password"
-                        width: 420  // Adjusted to fit within 470 total
+                        Layout.fillWidth: true
                         height: 50
                         font.pixelSize: 18
-                        echoMode: TextInput.Password
                         color: "black"
-                        placeholderTextColor: "#9e9e9e"
+                        placeholderTextColor: "#000000"
+                        echoMode: TextInput.Password
                         horizontalAlignment: Text.AlignLeft
                         verticalAlignment: Text.AlignVCenter
                         leftPadding: 12
@@ -258,13 +284,15 @@ ApplicationWindow {
 
                         onTextChanged: {
                             textHandler.processPwd(text)
-                        }
+		        }
                     }
                 }
 
-                Column {
-                    spacing: 20
+                // Buttons Column
+                ColumnLayout {
+                    spacing: 20  ;
                     anchors.horizontalCenter: parent.horizontalCenter
+                    Layout.fillWidth: true
 
                     Text {
                         text: authController.text
@@ -272,29 +300,32 @@ ApplicationWindow {
                         color: "white"
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
-
-                    // Login Button
                     Loader {
+                        id: loginButtonLoader
                         sourceComponent: customButtonComponent
+                        Layout.preferredWidth: 320  ;
+                        Layout.preferredHeight: 45  ;
+
                         onLoaded: {
                             item.text = "Login"
-                            item.width = 320
-                            item.height = 45
+                            item.width = 320  ;
+                            item.height = 45  ;
                             item.normalColor = "#33cc33"
                             item.hoverColor = "#00ff00"
                             item.pressedColor = "#00ff00"
                             item.borderColor = "#33cc33"
-                            item.textColor = "white"
-                            item.textHoverColor = "white"
-                            item.textPressedColor = "white"
+                            item.textColor = "black"
+                            item.textHoverColor = "black"
+                            item.textPressedColor = "black"
+
+                            if ("font" in item) {
+                                item.font.pixelSize = 18  ;
+                            }
 
                             item.clicked.connect(() => {
                                 btnHandler.handleLoginBtn()
                                 if (check_login()) {
                                     stackView.push(dashboardPageComponent)
-                                    item.normalColor = "#33cc33"
-                                    item.hoverColor = "#00ff00"
-                                    item.pressedColor = "#00ff00"
                                 } else {
                                     item.normalColor = "#800000"
                                 }
@@ -302,26 +333,274 @@ ApplicationWindow {
                         }
                     }
 
-                    // Register Button
                     Loader {
+                        id: registerButtonLoader
                         sourceComponent: customButtonComponent
+                        Layout.preferredWidth: 320  ;
+                        Layout.preferredHeight: 45  ;
+
                         onLoaded: {
                             item.text = "Register"
-                            item.width = 320
-                            item.height = 45
+                            item.width = 320  ;
+                            item.height = 45  ;
                             item.normalColor = "#33cc33"
                             item.hoverColor = "#00ff00"
                             item.pressedColor = "#00ff00"
                             item.borderColor = "#33cc33"
-                            item.textColor = "white"
-                            item.textHoverColor = "white"
-                            item.textPressedColor = "white"
+                            item.textColor = "black"
+                            item.textHoverColor = "black"
+                            item.textPressedColor = "black"
+
+                            if ("font" in item) {
+                                item.font.pixelSize = 18  ;
+                            }
 
                             item.clicked.connect(() => {
                                 btnHandler.handleRegisterBtn()
-                                console.log("Register clicked:", nameTextBox.text, gmailTextBox.text, passwordTextBox.text)
+                                console.log("Register clicked:", nameTextBox.text, emailTextBox.text, passwordTextBox.text)
                             })
                         }
+                    }
+                }
+            }
+        }
+    }
+
+
+    // Map result page
+    Component {
+
+        id: mapResultPage
+
+        Item {
+            anchors.fill: parent
+
+            property real baseWidth: 1400
+            property real baseHeight: 800
+            property real scaleFactor: Math.min(width / baseWidth, height / baseHeight)
+
+            Rectangle {
+                Material.theme: Material.Dark
+                width: parent.width
+                height: 80
+                color: "#0d1a26"
+                anchors.top: parent.top
+                z: 1
+
+                Label {
+                    text: "Search Result"
+                    font.pixelSize: 40 * scaleFactor
+                    font.bold: true
+                    color: "#00b300"
+                    anchors.centerIn: parent
+                    Material.theme: Material.Dark
+                }
+            }
+
+            Loader {
+                id: backFromMapButtonLoader
+                sourceComponent: customButtonComponent
+                width: 120 * scaleFactor
+                height: 45 * scaleFactor
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.topMargin: 20 * scaleFactor
+                anchors.leftMargin: 20 * scaleFactor
+                Material.theme: Material.Dark
+                z: 1
+                onLoaded: {
+                    item.text = "Back"
+                    item.normalColor = "#33cc33"
+                    item.hoverColor = "#00ff00"
+                    item.pressedColor = "#00ff00"
+                    item.borderColor = "#33cc33"
+                    item.textColor = "black"
+                    item.textHoverColor = "black"
+                    item.textPressedColor = "black"
+
+                    // Scale font size of button text if available
+                    if ("font" in item) {
+                        item.font.pixelSize = 18 * scaleFactor
+                    }
+
+                    item.clicked.connect(() => {
+                        stackView.pop();
+                    })
+                }
+            }
+
+            Plugin {
+                id: mapPlugin
+                name: "osm"
+                PluginParameter {
+                    name: "osm.mapping.custom.host"
+                    value: "https://tile.openstreetmap.org/"
+                }
+            }
+
+            Map {
+                id: map
+                width: parent.width * 0.9
+                height: parent.height * 0.85
+                anchors.centerIn: parent
+                plugin: mapPlugin
+                center: QtPositioning.coordinate(59.91, 10.75)
+                zoomLevel: 14
+                activeMapType: map.supportedMapTypes[map.supportedMapTypes.length - 1]
+                property geoCoordinate startCentroid
+
+                PinchHandler {
+                    id: pinch
+                    target: null
+                    onActiveChanged: if (active) {
+                        map.startCentroid = map.toCoordinate(pinch.centroid.position, false)
+                    }
+                    onScaleChanged: (delta) => {
+                        map.zoomLevel += Math.log2(delta)
+                        map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
+                    }
+                    onRotationChanged: (delta) => {
+                        map.bearing -= delta
+                        map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
+                    }
+                    grabPermissions: PointerHandler.TakeOverForbidden
+                }
+
+                WheelHandler {
+                    id: wheel
+                    acceptedDevices: Qt.platform.pluginName === "cocoa" || Qt.platform.pluginName === "wayland"
+                        ? PointerDevice.Mouse | PointerDevice.TouchPad
+                        : PointerDevice.Mouse
+                    rotationScale: 1 / 120
+                    property: "zoomLevel"
+                }
+
+                DragHandler {
+                    id: drag
+                    target: null
+                    onTranslationChanged: (delta) => map.pan(-delta.x, -delta.y)
+                }
+
+                Shortcut {
+                    enabled: map.zoomLevel < map.maximumZoomLevel
+                    sequence: StandardKey.ZoomIn
+                    onActivated: map.zoomLevel = Math.round(map.zoomLevel + 1)
+                }
+
+                Shortcut {
+                    enabled: map.zoomLevel > map.minimumZoomLevel
+                    sequence: StandardKey.ZoomOut
+                    onActivated: map.zoomLevel = Math.round(map.zoomLevel - 1)
+                }
+            }
+        }
+    }
+
+
+    // Search page
+    Component {
+        id: searchMealPage
+
+        Item {
+            id: root
+            anchors.fill: parent
+
+            property real baseWidth: 800
+            property real baseHeight: 600
+
+            // Scale factor based on the smaller ratio of width or height relative to base
+            property real scaleFactor: Math.min(width / baseWidth, height / baseHeight)
+
+            Label {
+                text: "Browse Meals"
+                font.pixelSize: 40  ;
+                font.bold: true
+                color: "#00b300"
+                anchors.top: parent.top
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.topMargin: 20  ;
+                Material.theme: Material.Dark
+            }
+
+            Column {
+                anchors.centerIn: parent
+                spacing: 35  ;
+                width: 470  ;
+
+                TextField {
+                    id: uiSearchBox
+                    placeholderText: "Browse Meals"
+                    width: parent.width
+                    height: 50  ;
+                    font.pixelSize: 18  ;
+                    color: "black"
+                    placeholderTextColor: "#000000"
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignVCenter
+                    leftPadding: 12  ;
+                    rightPadding: 12  ;
+
+                    background: Rectangle {
+                        radius: 8  ;
+                        border.color: uiSearchBox.activeFocus ? "#3399ff" : "#3385ff"
+                        border.width: 2  ;
+                        color: "#3385ff"
+                    }
+                }
+
+                Loader {
+                    id: browseButtonLoader
+                    sourceComponent: customButtonComponent
+                    width: uiSearchBox.width
+                    height: uiSearchBox.height
+                    Material.theme: Material.Dark
+
+                    onLoaded: {
+                        item.text = "Browse!"
+                        item.width = uiSearchBox.width
+                        item.height = uiSearchBox.height
+                        item.normalColor = "#33cc33"
+                        item.hoverColor = "#00ff00"
+                        item.pressedColor = "#00ff00"
+                        item.borderColor = "#33cc33"
+                        item.textColor = "black"
+                        item.textHoverColor = "black"
+                        item.textPressedColor = "black"
+                        // Scale font size if the button supports it
+                        if ("font" in item) {
+                            item.font.pixelSize = 18  ;
+                        }
+                        item.clicked.connect(() => {
+                            stackView.push(mapResultPage)
+                        })
+                    }
+                }
+
+                Loader {
+                    id: backToHomeButtonLoader
+                    sourceComponent: customButtonComponent
+                    Layout.preferredWidth: 120  ;
+                    Layout.preferredHeight: 45  ;
+
+                    onLoaded: {
+                        item.text = "Home"
+                        item.width = 120  ;
+                        item.height = 45  ;
+                        item.normalColor = "#33cc33"
+                        item.hoverColor = "#00ff00"
+                        item.pressedColor = "#00ff00"
+                        item.borderColor = "#33cc33"
+                        item.textColor = "black"
+                        item.textHoverColor = "black"
+                        item.textPressedColor = "black"
+
+                        if ("font" in item) {
+                            item.font.pixelSize = 18  ;
+                        }
+
+                        item.clicked.connect(() => {
+                            stackView.pop()
+                        })
                     }
                 }
 
@@ -329,98 +608,382 @@ ApplicationWindow {
         }
     }
 
+    Component {
+        id: mapSelectComponent
+
+        Item {
+            id: root
+            anchors.fill: parent
+
+            property real baseWidth: 1400
+            property real baseHeight: 800
+            property real scaleFactor: Math.min(width / baseWidth, height / baseHeight)
+            property var selectedCoordinate: QtPositioning.coordinate(0, 0)
+
+            Rectangle {
+                width: parent.width
+                height: 80
+                color: "#0d1a26"
+                anchors.top: parent.top
+                z: 1
+
+                Label {
+                    text: "Search Result"
+                    font.pixelSize: 40 * scaleFactor
+                    font.bold: true
+                    color: "#00b300"
+                    anchors.centerIn: parent
+                }
+            }
+
+            Loader {
+                id: backFromMapButtonLoader
+                sourceComponent: customButtonComponent
+                width: 120 * scaleFactor
+                height: 45 * scaleFactor
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.topMargin: 20 * scaleFactor
+                anchors.leftMargin: 20 * scaleFactor
+                z: 1
+
+                onLoaded: {
+                    item.text = "Back"
+                    item.normalColor = "#33cc33"
+                    item.hoverColor = "#00ff00"
+                    item.pressedColor = "#00ff00"
+                    item.borderColor = "#33cc33"
+                    item.textColor = "black"
+                    item.textHoverColor = "black"
+                    item.textPressedColor = "black"
+
+                    if ("font" in item) item.font.pixelSize = 18 * scaleFactor
+
+                    if ("clicked" in item) {
+                        item.clicked.connect(() => {
+                            stackView.pop();
+                        });
+                    } else {
+                        console.error("customButtonComponent missing 'clicked' signal");
+                    }
+                }
+            }
+
+            Plugin {
+                id: mapPlugin
+                name: "osm"
+                PluginParameter {
+                    name: "osm.mapping.custom.host"
+                    value: "https://tile.openstreetmap.org/"
+                }
+            }
+
+            Map {
+                id: map
+                width: parent.width * 0.9
+                height: parent.height * 0.85
+                anchors.centerIn: parent
+                plugin: mapPlugin
+                center: QtPositioning.coordinate(59.91, 10.75)
+                zoomLevel: 14
+                activeMapType: map.supportedMapTypes[map.supportedMapTypes.length - 1]
+                property geoCoordinate startCentroid
+
+                PinchHandler {
+                    id: pinch
+                    target: null
+                    onActiveChanged: if (active) {
+                        map.startCentroid = map.toCoordinate(pinch.centroid.position, false)
+                    }
+                    onScaleChanged: (delta) => {
+                        map.zoomLevel += Math.log2(delta)
+                        map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
+                    }
+                    onRotationChanged: (delta) => {
+                        map.bearing -= delta
+                        map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
+                    }
+                    grabPermissions: PointerHandler.TakeOverForbidden
+                }
+
+                WheelHandler {
+                    acceptedDevices: Qt.platform.pluginName === "cocoa" || Qt.platform.pluginName === "wayland"
+                        ? PointerDevice.Mouse | PointerDevice.TouchPad
+                        : PointerDevice.Mouse
+                    rotationScale: 1 / 120
+                    property: "zoomLevel"
+                }
+
+                DragHandler {
+                    target: null
+                    onTranslationChanged: (delta) => map.pan(-delta.x, -delta.y)
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: (mouse) => {
+                        var coord = map.toCoordinate(Qt.point(mouse.x, mouse.y));
+                        selectedCoordinate = coord;
+                        marker.coordinate = coord;
+                    }
+                }
+
+                MapQuickItem {
+                    id: marker
+                    anchorPoint.x: icon.width / 2
+                    anchorPoint.y: icon.height
+                    coordinate: QtPositioning.coordinate(0, 0)
+                    sourceItem: Image {
+                        id: icon
+                        source: "qrc:/resources/marker.png"
+                        width: 32
+                        height: 32
+                    }
+                    visible: selectedCoordinate.latitude !== 0 || selectedCoordinate.longitude !== 0
+                }
+
+                Button {
+                    id: selectLocation
+                    text: "Save Location"
+                    anchors.bottom: parent.bottom
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.bottomMargin: 20 * scaleFactor
+                    width: 160 * scaleFactor
+                    height: 50 * scaleFactor
+
+                    onClicked: {
+                        console.log("Selected coordinate:", selectedCoordinate.latitude, selectedCoordinate.longitude);
+                        // Signal or callback can go here if needed
+                    }
+                }
+
+                Shortcut {
+                    enabled: map.zoomLevel < map.maximumZoomLevel
+                    sequence: StandardKey.ZoomIn
+                    onActivated: map.zoomLevel = Math.round(map.zoomLevel + 1)
+                }
+
+                Shortcut {
+                    enabled: map.zoomLevel > map.minimumZoomLevel
+                    sequence: StandardKey.ZoomOut
+                    onActivated: map.zoomLevel = Math.round(map.zoomLevel - 1)
+                }
+            }
+        }
+    }
+
+
 
     // Create page
 
     Component {
-
         id: createPageComponent
 
         Item {
-
+            id: root
             anchors.fill: parent
+
+            property real baseWidth: 800
+            property real baseHeight: 600
+            property real scaleFactor: Math.min(width / baseWidth, height / baseHeight)
 
             Label {
                 text: "Create Meal"
-                font.pixelSize: 40
+                font.pixelSize: 40  ;
                 font.bold: true
                 color: "#00b300"
                 anchors.top: parent.top
                 anchors.horizontalCenter: parent.horizontalCenter
-                anchors.topMargin: 20
+                anchors.topMargin: 20  ;
                 Material.theme: Material.Dark
             }
-
 
             Loader {
                 id: backToHomeButtonLoader
                 sourceComponent: customButtonComponent
                 anchors.top: parent.top
                 anchors.left: parent.left
-                anchors.topMargin: 10
-                anchors.leftMargin: 20
+                anchors.topMargin: 10  ;
+                anchors.leftMargin: 20  ;
                 Material.theme: Material.Dark
                 onLoaded: {
+
+
                     item.text = "Home"
                     item.width = 120
                     item.height = 45
+
                     item.normalColor = "#33cc33"
                     item.hoverColor = "#00ff00"
                     item.pressedColor = "#00ff00"
                     item.borderColor = "#33cc33"
-                    item.textColor = "white"
-                    item.textHoverColor = "white"
-                    item.textPressedColor = "white"
-                    item.clicked.connect(() => {
-                        stackView.pop()
-                    })
+                    item.textColor = "black"
+                    item.textHoverColor = "black"
+                    item.textPressedColor = "black"
+
+                    if ("font" in item) {
+                        item.font.pixelSize = 18  ;
+                    }
+
+                    if ("clicked" in item) {
+                        item.clicked.connect(() => {
+                            stackView.pop()
+                        })
+                    } else {
+                        console.error("customButtonComponent missing 'clicked' signal")
+                    }
                 }
             }
+
+
+
+            Loader {
+                id: selectButtonLoader
+                sourceComponent: customButtonComponent
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.topMargin: 220  ;
+                anchors.leftMargin: 20  ;
+                Material.theme: Material.Dark
+                onLoaded: {
+
+
+                    item.text = "Location"
+                    item.width = 120  ;
+                    item.height = 45  ;
+
+                    item.normalColor = "#33cc33"
+                    item.hoverColor = "#00ff00"
+                    item.pressedColor = "#00ff00"
+                    item.borderColor = "#33cc33"
+                    item.textColor = "black"
+                    item.textHoverColor = "black"
+                    item.textPressedColor = "black"
+
+                    if ("font" in item) {
+                        item.font.pixelSize = 18  ;
+                    }
+
+                    if ("clicked" in item) {
+                        item.clicked.connect(() => {
+                            stackView.push(mapSelectComponent)
+                        })
+                    } else {
+                        console.error("customButtonComponent missing 'clicked' signal")
+                    }
+                }
+            }
+
+
+            Loader {
+                id: submitButtonLoader
+                sourceComponent: customButtonComponent
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.topMargin: 100  ;
+                anchors.leftMargin: 20  ;
+                Material.theme: Material.Dark
+                onLoaded: {
+
+
+                    item.text = "Submit"
+                    item.width = 120  ;
+                    item.height = 45  ;
+
+                    item.normalColor = "#33cc33"
+                    item.hoverColor = "#00ff00"
+                    item.pressedColor = "#00ff00"
+                    item.borderColor = "#33cc33"
+                    item.textColor = "black"
+                    item.textHoverColor = "black"
+                    item.textPressedColor = "black"
+
+                    if ("font" in item) {
+                        item.font.pixelSize = 18  ;
+                    }
+
+                    if ("clicked" in item) {
+                        item.clicked.connect(() => {
+                            stackView.pop()
+                        })
+                    } else {
+                        console.error("customButtonComponent missing 'clicked' signal")
+                    }
+                }
+            }
+
+
             Column {
                 anchors.centerIn: parent
-                spacing: 20
+                spacing: 20  ;
 
+                function createTextField(idName, placeholder) {
+                    return Qt.createQmlObject(`
+                        import QtQuick 2.15
+                        import QtQuick.Controls 2.15
+
+                        TextField {
+                            id: ${idName}
+                            placeholderText: "${placeholder}"
+                            width: 470  ;
+                            height: 50  ;
+                            font.pixelSize: 18  ;
+                            color: "black"
+                            placeholderTextColor: "#000000"
+                            horizontalAlignment: Text.AlignLeft
+                            verticalAlignment: Text.AlignVCenter
+                            leftPadding: 12  ;
+                            rightPadding: 12  ;
+
+                            background: Rectangle {
+                                radius: 8  ;
+                                border.color: ${idName}.activeFocus ? "#3399ff" : "#3385ff"
+                                border.width: 2  ;
+                                color: "#3385ff"
+                            }
+                        }
+                    `, root, idName);
+                }
+
+                // Manually create TextFields (can't dynamically create in Column easily)
                 TextField {
                     id: mealNameTextBox
                     placeholderText: "Enter your Meal Name (Id)"
-                    width: 470
-                    height: 50
-                    font.pixelSize: 18
-                   // echoMode: TextInput.Password
+                    width: 470  ;
+                    height: 50  ;
+                    font.pixelSize: 18  ;
                     color: "black"
-                    placeholderTextColor: "#9e9e9e"
+                    placeholderTextColor: "#000000"
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
-                    leftPadding: 12
-                    rightPadding: 12
+                    leftPadding: 12  ;
+                    rightPadding: 12  ;
 
                     background: Rectangle {
-                        radius: 8
+                        radius: 8  ;
                         border.color: mealNameTextBox.activeFocus ? "#3399ff" : "#3385ff"
-                        border.width: 2
+                        border.width: 2  ;
                         color: "#3385ff"
                     }
                 }
 
-
                 TextField {
                     id: mealDescriptionTextBox
                     placeholderText: "Enter your Meal Description"
-                    width: 470
-                    height: 50
-                    font.pixelSize: 18
-                   // echoMode: TextInput.Password
+                    width: 470  ;
+                    height: 50  ;
+                    font.pixelSize: 18  ;
                     color: "black"
-                    placeholderTextColor: "#9e9e9e"
+                    placeholderTextColor: "#000000"
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
-                    leftPadding: 12
-                    rightPadding: 12
+                    leftPadding: 12  ;
+                    rightPadding: 12  ;
 
                     background: Rectangle {
-                        radius: 8
+                        radius: 8  ;
                         border.color: mealDescriptionTextBox.activeFocus ? "#3399ff" : "#3385ff"
-                        border.width: 2
+                        border.width: 2  ;
                         color: "#3385ff"
                     }
                 }
@@ -428,115 +991,51 @@ ApplicationWindow {
                 TextField {
                     id: mealPriceTextBox
                     placeholderText: "Enter Cost of Meal (USD)"
-                    width: 470
-                    height: 50
-                    font.pixelSize: 18
-                   // echoMode: TextInput.Password
+                    width: 470  ;
+                    height: 50  ;
+                    font.pixelSize: 18  ;
                     color: "black"
-                    placeholderTextColor: "#9e9e9e"
+                    placeholderTextColor: "#000000"
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
-                    leftPadding: 12
-                    rightPadding: 12
+                    leftPadding: 12  ;
+                    rightPadding: 12  ;
 
                     background: Rectangle {
-                        radius: 8
+                        radius: 8  ;
                         border.color: mealPriceTextBox.activeFocus ? "#3399ff" : "#3385ff"
-                        border.width: 2
+                        border.width: 2  ;
                         color: "#3385ff"
                     }
                 }
 
-                TextField {
-                    id: mealLongTextBox
-                    placeholderText: "Enter Geographic Longitude"
-                    width: 470
-                    height: 50
-                    font.pixelSize: 18
-                   // echoMode: TextInput.Password
-                    color: "black"
-                    placeholderTextColor: "#9e9e9e"
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-                    leftPadding: 12
-                    rightPadding: 12
-
-                    background: Rectangle {
-                        radius: 8
-                        border.color: mealLongTextBox.activeFocus ? "#3399ff" : "#3385ff"
-                        border.width: 2
-                        color: "#3385ff"
-                    }
-                }
-
-                TextField {
-                    id: mealLatTextBox
-                    placeholderText: "Enter Geographic Latitude"
-                    width: 470
-                    height: 50
-                    font.pixelSize: 18
-                   // echoMode: TextInput.Password
-                    color: "black"
-                    placeholderTextColor: "#9e9e9e"
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-                    leftPadding: 12
-                    rightPadding: 12
-
-                    background: Rectangle {
-                        radius: 8
-                        border.color: mealLatTextBox.activeFocus ? "#3399ff" : "#3385ff"
-                        border.width: 2
-                        color: "#3385ff"
-                    }
-                }
 
                 TextField {
                     id: mealSpotTextBox
-                    placeholderText: "Enter Number of Patricipants"
-                    width: 470
-                    height: 50
-                    font.pixelSize: 18
-                   // echoMode: TextInput.Password
+                    placeholderText: "Enter Number of Participants"
+                    width: 470  ;
+                    height: 50  ;
+                    font.pixelSize: 18  ;
                     color: "black"
-                    placeholderTextColor: "#9e9e9e"
+                    placeholderTextColor: "#000000"
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
-                    leftPadding: 12
-                    rightPadding: 12
+                    leftPadding: 12  ;
+                    rightPadding: 12  ;
 
                     background: Rectangle {
-                        radius: 8
+                        radius: 8  ;
                         border.color: mealSpotTextBox.activeFocus ? "#3399ff" : "#3385ff"
-                        border.width: 2
+                        border.width: 2  ;
                         color: "#3385ff"
                     }
-                }
+                }}
 
-                Loader {
-                        id: submitMealLoader
-                        Material.theme: Material.Dark
-                        sourceComponent: customButtonComponent
-                        onLoaded: {
-                            item.text = "Submit Meal"
-                            item.width = mealSpotTextBox.width
-                            item.height = 45
-                            item.normalColor = "#33cc33"
-                            item.hoverColor = "#00ff00"
-                            item.pressedColor = "#00ff00"
-                            item.borderColor = "#33cc33"
-                            item.textColor = "white"
-                            item.textHoverColor = "white"
-                            item.textPressedColor = "white"
-                            item.clicked.connect(() => {
-                                // SUBMIT MEAL
-                            })
-                        }
-                    }
 
-            }
+
         }
     }
+
     Component {
         id: userPageComponent
 
@@ -560,7 +1059,7 @@ ApplicationWindow {
                 sourceComponent: customButtonComponent
                 anchors.top: parent.top
                 anchors.left: parent.left
-                anchors.topMargin: 10
+                anchors.topMargin: 130
                 anchors.leftMargin: 20
                 Material.theme: Material.Dark
                 onLoaded: {
@@ -571,9 +1070,9 @@ ApplicationWindow {
                     item.hoverColor = "#00ff00"
                     item.pressedColor = "#00ff00"
                     item.borderColor = "#33cc33"
-                    item.textColor = "white"
-                    item.textHoverColor = "white"
-                    item.textPressedColor = "white"
+                    item.textColor = "black"
+                    item.textHoverColor = "black"
+                    item.textPressedColor = "black"
                     item.clicked.connect(() => {
                         stackView.pop()
                     })
@@ -585,8 +1084,8 @@ ApplicationWindow {
                 sourceComponent: customButtonComponent
                 anchors.top: parent.top
                 anchors.left: parent.left
-                anchors.topMargin: 10
-                anchors.leftMargin: 200
+                anchors.topMargin: 70
+                anchors.leftMargin: 20
                 Material.theme: Material.Dark
                 onLoaded: {
                     item.text = "Settings"
@@ -596,11 +1095,36 @@ ApplicationWindow {
                     item.hoverColor = "#00ff00"
                     item.pressedColor = "#00ff00"
                     item.borderColor = "#33cc33"
-                    item.textColor = "white"
-                    item.textHoverColor = "white"
-                    item.textPressedColor = "white"
+                    item.textColor = "black"
+                    item.textHoverColor = "black"
+                    item.textPressedColor = "black"
                     item.clicked.connect(() => {
                         stackView.push(userSettingsComponent)
+                    })
+                }
+            }
+
+            Loader {
+                id: logoutButtonLoader
+                sourceComponent: customButtonComponent
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.topMargin: 10
+                anchors.leftMargin: 20
+                Material.theme: Material.Dark
+                onLoaded: {
+                    item.text = "Logout"
+                    item.width = 120
+                    item.height = 45
+                    item.normalColor = "#33cc33"
+                    item.hoverColor = "#00ff00"
+                    item.pressedColor = "#00ff00"
+                    item.borderColor = "#33cc33"
+                    item.textColor = "black"
+                    item.textHoverColor = "black"
+                    item.textPressedColor = "black"
+                    item.clicked.connect(() => {
+                        stackView.push(loginPageComponent)
                     })
                 }
             }
@@ -847,7 +1371,7 @@ ApplicationWindow {
                         font.pixelSize: 18
                       //  echoMode: TextInput.Password
                         color: "black"
-                        placeholderTextColor: "#9e9e9e"
+                        placeholderTextColor: "#000000"
                         horizontalAlignment: Text.AlignLeft
                         verticalAlignment: Text.AlignVCenter
                         leftPadding: 12
@@ -885,7 +1409,7 @@ ApplicationWindow {
                         font.pixelSize: 18
                       //  echoMode: TextInput.Password
                         color: "black"
-                        placeholderTextColor: "#9e9e9e"
+                        placeholderTextColor: "#000000"
                         horizontalAlignment: Text.AlignLeft
                         verticalAlignment: Text.AlignVCenter
                         leftPadding: 12
@@ -923,7 +1447,7 @@ ApplicationWindow {
                         font.pixelSize: 18
                       //  echoMode: TextInput.Password
                         color: "black"
-                        placeholderTextColor: "#9e9e9e"
+                        placeholderTextColor: "#000000"
                         horizontalAlignment: Text.AlignLeft
                         verticalAlignment: Text.AlignVCenter
                         leftPadding: 12
@@ -953,9 +1477,9 @@ ApplicationWindow {
                         item.hoverColor = "#00ff00"
                         item.pressedColor = "#00ff00"
                         item.borderColor = "#33cc33"
-                        item.textColor = "white"
-                        item.textHoverColor = "white"
-                        item.textPressedColor = "white"
+                        item.textColor = "black"
+                        item.textHoverColor = "black"
+                        item.textPressedColor = "black"
                         item.clicked.connect(() => {
                             btnHandler.handleUserEditBtn()
                             stackView.pop();
@@ -969,14 +1493,20 @@ ApplicationWindow {
                     color: "white"
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
+
+
             }
         }
     }
+
+    // Navbar
 
     Component {
         id: dashboardPageComponent
 
         Item {
+            id: root
+            property real scaleFactor: 1.0
             anchors.fill: parent
 
             Image {
@@ -993,161 +1523,104 @@ ApplicationWindow {
                 id: mainMenuPage
                 width: parent.width
                 height: 75
-                //radius: 10
-                z:1
+                z: 1
                 border.width: 2
                 border.color: "#293d3d"
                 color: "#293d3d"
                 anchors.bottom: parent.bottom
                 anchors.horizontalCenter: parent.horizontalCenter
-                anchors.bottomMargin: 20
-                 Material.theme: Material.Dark
+                anchors.bottomMargin: 0
+                Material.theme: Material.Dark
 
-                 RowLayout {
-                     id: topLabelRow
-                     anchors.fill: parent
-                     anchors.margins: 10
-                     spacing: 70
-
-                     Loader {
-                         id: logoutButtonLoader
-                         sourceComponent: customButtonComponent
-                         width: 120
-                         height: 45
-                         Layout.leftMargin: 130
-                         onLoaded: {
-                             item.text = "Logout"
-                             item.normalColor = "#33cc33"
-                             item.hoverColor = "#00ff00"
-                             item.pressedColor = "#00ff00"
-                             item.borderColor = "#33cc33"
-                             item.textColor = "white"
-                             item.textHoverColor = "white"
-                             item.textPressedColor = "white"
-                             item.clicked.connect(() => {
-                                 stackView.pop()
-                             })
-                         }
-                     }
-
-                     Item { Layout.fillWidth: true }
-
-                     Loader {
-                         id: createButtonLoader
-                         sourceComponent: customButtonComponent
-                         width: 120
-                         height: 45
-                         onLoaded: {
-                             item.text = "Create Meal"
-                             item.normalColor = "#33cc33"
-                             item.hoverColor = "#00ff00"
-                             item.pressedColor = "#00ff00"
-                             item.borderColor = "#33cc33"
-                             item.textColor = "white"
-                             item.textHoverColor = "white"
-                             item.textPressedColor = "white"
-                             item.clicked.connect(() => {
-                                 stackView.push(createPageComponent)
-                             })
-                         }
-                     }
-
-
-                     Loader {
-                         id: settingsButtonLoader
-                         sourceComponent: customButtonComponent
-                         width: 120
-                         height: 45
-                         Layout.leftMargin: 20
-                         Layout.rightMargin: 20
-                         onLoaded: {
-                             item.text = "Settings"
-                             item.normalColor = "#33cc33"
-                             item.hoverColor = "#00ff00"
-                             item.pressedColor = "#00ff00"
-                             item.borderColor = "#33cc33"
-                             item.textColor = "white"
-                             item.textHoverColor = "white"
-                             item.textPressedColor = "white"
-                             item.clicked.connect(() => {
-                                stackView.push(userSettingsComponent);
-                             })
-                         }
-                     }
-
-
-                     Loader {
-                         id: searchButtonLoader
-                         sourceComponent: customButtonComponent
-                         width: 120
-                         height: 45
-                         onLoaded: {
-                             item.text = "Search"
-                             item.normalColor = "#33cc33"
-                             item.hoverColor = "#00ff00"
-                             item.pressedColor = "#00ff00"
-                             item.borderColor = "#33cc33"
-                             item.textColor = "white"
-                             item.textHoverColor = "white"
-                             item.textPressedColor = "white"
-                             item.clicked.connect(() => {
-                                 console.log("Search clicked")
-                             })
-                         }
-                     }
-
-                     Item { Layout.fillWidth: true }
-
-                     Loader {
-                         id: profileButtonLoader
-                         sourceComponent: customButtonComponent
-                         width: 120
-                         height: 45
-                         Layout.rightMargin: 130
-                         onLoaded: {
-                             item.text = "View Profile"
-                             item.normalColor = "#33cc33"
-                             item.hoverColor = "#00ff00"
-                             item.pressedColor = "#00ff00"
-                             item.borderColor = "#33cc33"
-                             item.textColor = "white"
-                             item.textHoverColor = "white"
-                             item.textPressedColor = "white"
-                             item.clicked.connect(() => {
-                                 stackView.push(userPageComponent)
-                             })
-                         }
-                     }
-                 }
-                }
-
-            /*Plugin {
-                id:googlemapview
-                name : "osm"
-            }
-
-            Map {
-                id:mapview
-                anchors.fill: parent
-                plugin: googlemapview
-                zoomLevel: 4
-            }*/
-
-            Plugin {
-                    id: mapPlugin
-                    name: "osm"
-                    PluginParameter {
-                        name: "osm.mapping.custom.host"
-                        value: "https://tile.openstreetmap.org/"
+                // Create Meal Button - left aligned + 20 px
+                Loader {
+                    id: createButtonLoader
+                    sourceComponent: customButtonComponent
+                    width: 120
+                    height: 45
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: 20
+                    onLoaded: {
+                        item.text = "Create Meal"
+                        item.width = 120
+                        item.height = 45
+                        item.normalColor = "#33cc33"
+                        item.hoverColor = "#00ff00"
+                        item.pressedColor = "#00ff00"
+                        item.borderColor = "#33cc33"
+                        item.textColor = "black"
+                        item.textHoverColor = "black"
+                        item.textPressedColor = "black"
+                        if ("font" in item) item.font.pixelSize = 18
+                        item.clicked.connect(() => stackView.push(createPageComponent))
                     }
                 }
+
+                // View Profile Button - centered
+                Loader {
+                    id: profileButtonLoader
+                    sourceComponent: customButtonComponent
+                    width: 120
+                    height: 45
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    onLoaded: {
+                        item.text = "View Profile"
+                        item.width = 120
+                        item.height = 45
+                        item.normalColor = "#33cc33"
+                        item.hoverColor = "#00ff00"
+                        item.pressedColor = "#00ff00"
+                        item.borderColor = "#33cc33"
+                        item.textColor = "black"
+                        item.textHoverColor = "black"
+                        item.textPressedColor = "black"
+                        if ("font" in item) item.font.pixelSize = 18
+                        item.clicked.connect(() => stackView.push(userPageComponent))
+                    }
+                }
+
+                // Search Button - right aligned - 20 px
+                Loader {
+                    id: searchButtonLoader
+                    sourceComponent: customButtonComponent
+                    width: 120
+                    height: 45
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: 20
+                    onLoaded: {
+                        item.text = "Search"
+                        item.width = 120
+                        item.height = 45
+                        item.normalColor = "#33cc33"
+                        item.hoverColor = "#00ff00"
+                        item.pressedColor = "#00ff00"
+                        item.borderColor = "#33cc33"
+                        item.textColor = "black"
+                        item.textHoverColor = "black"
+                        item.textPressedColor = "black"
+                        if ("font" in item) item.font.pixelSize = 18
+                        item.clicked.connect(() => stackView.push(searchMealPage))
+                    }
+                }
+            }
+
+            Plugin {
+                id: mapPlugin
+                name: "osm"
+                PluginParameter {
+                    name: "osm.mapping.custom.host"
+                    value: "https://tile.openstreetmap.org/"
+                }
+            }
 
             Map {
                 id: map
                 width: 1400
                 height: 800
                 anchors.centerIn: parent
-               // z:0
                 plugin: mapPlugin
                 center: QtPositioning.coordinate(59.91, 10.75)
                 zoomLevel: 14
@@ -1200,5 +1673,4 @@ ApplicationWindow {
             }
         }
     }
-
 }
