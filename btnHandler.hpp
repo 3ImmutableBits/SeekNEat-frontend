@@ -23,6 +23,7 @@ public slots:
     void handleRegisterBtn();
     void handleLogoutBtn();
     void handleUserEditBtn();
+    void handleSubmitMeal();
 };
 
 extern SNEconnection conn;

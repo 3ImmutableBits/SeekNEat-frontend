@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <vector>
 
+#define VALIDATETOKEN_ENDPOINT "http://192.168.97.154:4000/api/validate_token"
 #define LOGIN_ENDPOINT "http://192.168.97.154:4000/api/login"
 #define SIGNUP_ENDPOINT "http://192.168.97.154:4000/api/register"
 #define CHANGEUSER_ENDPOINT "http://192.168.97.154:4000/api/change_user"
@@ -27,6 +28,7 @@ struct Meal {
 class SNEconnection
 {
     protected:
+        bool loggedIn;
         CURL* curl;
         CURLcode res;
         std::string tkn;
@@ -40,6 +42,9 @@ class SNEconnection
 
         // @brief Sends account credentials to the server
         std::string login(std::string username, std::string pwd);
+
+        // @brief Returns the login state
+        bool isLogged() const;
 
         // @brief Logs out the account and deletes the token keychain
         std::string logout();

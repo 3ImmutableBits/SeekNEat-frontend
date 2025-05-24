@@ -38,10 +38,41 @@ bool SNEconnection::init()
 
     job->deleteLater();
 
+    // TOKEN VALIDATION
+    std::string serverResponse;
+
+    struct curl_slist *hList = NULL;
+    const std::string header = "Authorization: Bearer " + tkn;
+    hList = curl_slist_append(hList, header.data());
+    hList = curl_slist_append(hList, "Content-Type: application/json");
+
+    curl_easy_setopt(curl, CURLOPT_URL, CHANGEUSER_ENDPOINT);
+    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, hList);
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &serverResponse);
+
+    res = curl_easy_perform(curl);
+    curl_slist_free_all(hList);
+    if(res != CURLE_OK) { SNEdebug(3, curl_easy_strerror(res)); return 1; }
+    else SNEdebug(1, serverResponse);
+
+    // handle response
+    QJsonDocument response = QJsonDocument::fromJson(serverResponse.c_str());
+    if(!response.isObject()) { SNEdebug(3, "invalid response"); return 1; }
+
+    QJsonObject obj = response.object();
+
+    std::string error = obj.value("error").toString().toStdString();
+    bool success = obj.value("success").toBool();
+    if(!success) { SNEdebug(3, error); return 1; }
+    else loggedIn = true;
+
     return 0;
 }
 
 SNEconnection::~SNEconnection() { curl_easy_cleanup(curl); }
+
+bool SNEconnection::isLogged() const { return loggedIn; }
 
 std::string SNEconnection::login(std::string username, std::string pwd)
 {
@@ -99,6 +130,8 @@ std::string SNEconnection::login(std::string username, std::string pwd)
     }
     tokenJob->deleteLater(); // cleanup
 
+    loggedIn = true;
+
     SNEdebug(1, tkn);
 
     return "login successful";
@@ -122,6 +155,9 @@ std::string SNEconnection::logout()
     }
 
     job->deleteLater(); // cleanup
+
+    loggedIn = false;
+    
 
     return "successfully logged out";
 }

@@ -18,6 +18,15 @@ public:
     static inline std::string newEmail;
     static inline std::string newPwd;
 
+    // create meal
+    static inline std::string mealName;
+    static inline std::string mealDesc;
+    static inline std::string mealCost;
+    static inline std::string mealSeats;
+    static inline std::string mealTime;
+    static inline std::string mealLatitude;
+    static inline std::string mealLongitude;
+
     static inline QString authResult;
     static inline QString editResult;
 
@@ -33,6 +42,14 @@ public slots:
     void processNewUsername(const QString &input);
     void processNewPwd(const QString &input);
     void processNewEmail(const QString &input);
-};
 
+    void processMealName(const QString &input);
+    void processMealDesc(const QString &input);
+    void processMealCost(const QString &input);
+    void processMealSeats(const QString &input);
+    void processMealTime(const QString &input);
+
+    void processMealLatitude(const QString &input);
+    void processMealLongitude(const QString &input);
+};
 #endif

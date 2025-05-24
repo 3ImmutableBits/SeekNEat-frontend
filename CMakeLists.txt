@@ -31,6 +31,7 @@ qt_add_resources(appSeekNEat "resources"
         resources/circleimg.png
         resources/imgtitle.png
         resources/searchicon.png
+        resources/marker.png
 )
 
 qt_generate_moc(main.cpp main.moc TARGET appSeekNEat)

@@ -34,3 +34,18 @@ void btnHandler::handleUserEditBtn(){
     else if(result == "invalid response") editCtl->setText("Error: Invalid Server Response");
     else editCtl->setText(result.c_str());
 }
+
+void btnHandler::handleSubmitMeal()
+{
+    Meal m {
+        .name = textHandler::mealName,
+        .desc = textHandler::mealDesc,
+        .price = textHandler::mealCost,
+        .timestamp = std::stoll(textHandler::mealTime.c_str()),
+        .availSpots = std::atoi(textHandler::mealSeats.c_str()),
+        .latitude = std::stod(textHandler::mealLatitude.c_str()),
+        .longitude = std::stod(textHandler::mealLongitude.c_str())
+    };
+
+    conn.createMeal(m);
+}

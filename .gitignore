@@ -3,3 +3,4 @@ CMakeLists.txt.user
 *.autosave
 .vscode
 moc_btnHandler.cpp
+CMakeLists.txt.user

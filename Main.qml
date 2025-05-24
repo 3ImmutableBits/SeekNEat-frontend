@@ -753,7 +753,8 @@ ApplicationWindow {
 
                     onClicked: {
                         console.log("Selected coordinate:", selectedCoordinate.latitude, selectedCoordinate.longitude);
-                        // Signal or callback can go here if needed
+                        textHandler.processMealLatitude(selectedCoordinate.latitude)
+                        textHandler.processMealLongitude(selectedCoordinate.longitude)
                     }
                 }
 
@@ -905,6 +906,7 @@ ApplicationWindow {
                     if ("clicked" in item) {
                         item.clicked.connect(() => {
                             stackView.pop()
+                            btnHandler.handleSubmitMeal()
                         })
                     } else {
                         console.error("customButtonComponent missing 'clicked' signal")
@@ -965,6 +967,10 @@ ApplicationWindow {
                         border.width: 2  ;
                         color: "#3385ff"
                     }
+
+                    onTextChanged: {
+                        textHandler.processMealName(text)
+                    }
                 }
 
                 TextField {
@@ -986,6 +992,10 @@ ApplicationWindow {
                         border.width: 2  ;
                         color: "#3385ff"
                     }
+
+                    onTextChanged: {
+                        textHandler.processMealDesc(text)
+                    }
                 }
 
                 TextField {
@@ -1006,6 +1016,10 @@ ApplicationWindow {
                         border.color: mealPriceTextBox.activeFocus ? "#3399ff" : "#3385ff"
                         border.width: 2  ;
                         color: "#3385ff"
+                    }
+
+                    onTextChanged: {
+                        textHandler.processMealCost(text)
                     }
                 }
 
@@ -1029,7 +1043,11 @@ ApplicationWindow {
                         border.width: 2  ;
                         color: "#3385ff"
                     }
-                }}
+
+                    onTextChanged: {
+                        textHandler.processMealSeats(text)
+                    }
+                }
 
                 TextField {
                     id: timeTextBox
@@ -1050,10 +1068,12 @@ ApplicationWindow {
                         border.width: 2  ;
                         color: "#3385ff"
                     }
-                }}
 
-
-
+                    onTextChanged: {
+                        textHandler.processMealTime(text)
+                    }
+                }
+            }
         }
     }
 
