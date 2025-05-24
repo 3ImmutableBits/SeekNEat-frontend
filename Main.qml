@@ -948,7 +948,7 @@ ApplicationWindow {
                 // Manually create TextFields (can't dynamically create in Column easily)
                 TextField {
                     id: mealNameTextBox
-                    placeholderText: "Enter your Meal Name (Id)"
+                    placeholderText: "Enter your Meal Name"
                     width: 470  ;
                     height: 50  ;
                     font.pixelSize: 18  ;
@@ -990,7 +990,7 @@ ApplicationWindow {
 
                 TextField {
                     id: mealPriceTextBox
-                    placeholderText: "Enter Cost of Meal (USD)"
+                    placeholderText: "Enter Cost of Meal"
                     width: 470  ;
                     height: 50  ;
                     font.pixelSize: 18  ;
@@ -1013,6 +1013,27 @@ ApplicationWindow {
                 TextField {
                     id: mealSpotTextBox
                     placeholderText: "Enter Number of Participants"
+                    width: 470  ;
+                    height: 50  ;
+                    font.pixelSize: 18  ;
+                    color: "black"
+                    placeholderTextColor: "#000000"
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignVCenter
+                    leftPadding: 12  ;
+                    rightPadding: 12  ;
+
+                    background: Rectangle {
+                        radius: 8  ;
+                        border.color: mealSpotTextBox.activeFocus ? "#3399ff" : "#3385ff"
+                        border.width: 2  ;
+                        color: "#3385ff"
+                    }
+                }}
+
+                TextField {
+                    id: timeTextBox
+                    placeholderText: "Enter time (HH:MM:SS)"
                     width: 470  ;
                     height: 50  ;
                     font.pixelSize: 18  ;
