@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     SNEconnection conn;
     conn.init();
 
-    //SNEdebug(1, conn.login("midair", "pwdpwdpwd"));
+    SNEdebug(1, conn.login("midair", "pwdpwdpwd"));
     //SNEdebug(1, conn.signup("midair@midair.dev", "midair", "pwdpwdpwd"));
     //SNEdebug(1, conn.createMeal("Bordura", "Bordura de pe DN1, gust placut de ciment", 10, 1.240260, 32.824854));
     //SNEdebug(1, conn.joinMeal(1));
@@ -30,6 +30,8 @@ int main(int argc, char *argv[])
     {
         SNEdebug(1, i.name);
     }
+
+    //SNEdebug(1, conn.logout());
 
     conn.cleanup();
 

@@ -87,19 +87,45 @@ std::string SNEconnection::login(std::string username, std::string pwd)
     QKeychain::WritePasswordJob* tokenJob = new QKeychain::WritePasswordJob("SeekNEat");
     tokenJob->setKey("session_token");
     tokenJob->setTextData(QString::fromStdString(tkn));
-    QObject::connect(tokenJob, &QKeychain::Job::finished, [tokenJob]() {
-        if (tokenJob->error()) {
-            SNEdebug(3, "Error Saving Token: " + tokenJob->errorString().toStdString());
-        } else {
-            SNEdebug(1, "Token stored successfully!");
-        }
-        tokenJob->deleteLater(); // Clean up
-    });
+
+    QEventLoop loop;
+    QObject::connect(tokenJob, &QKeychain::Job::finished, &loop, &QEventLoop::quit);
     tokenJob->start();
+    loop.exec();
+
+    if (tokenJob->error()) {
+        SNEdebug(3, "Error Saving Token: " + tokenJob->errorString().toStdString());
+    }
+    else {
+        SNEdebug(1, "Token stored successfully!");
+    }
+    tokenJob->deleteLater(); // cleanup
 
     SNEdebug(1, tkn);
 
     return "login successful";
+}
+
+std::string SNEconnection::logout()
+{
+    QKeychain::DeletePasswordJob* job = new QKeychain::DeletePasswordJob("SeekNEat");
+    job->setKey("session_token");
+
+    QEventLoop loop;
+    QObject::connect(job, &QKeychain::DeletePasswordJob::finished, &loop, &QEventLoop::quit);
+    job->start();
+    loop.exec();
+
+    if (job->error()) {
+        SNEdebug(3, "Error deleting password: " + job->errorString().toStdString());
+    }
+    else {
+        SNEdebug(1, "Password deleted successfully!");
+    }
+
+    job->deleteLater(); // cleanup
+
+    return "successfully logged out";
 }
 
 std::string SNEconnection::signup(std::string email, std::string username, std::string pwd)
@@ -142,6 +168,51 @@ std::string SNEconnection::signup(std::string email, std::string username, std::
     if(!success) return error;
 
     return "signup successful";
+}
+
+std::string SNEconnection::changeUser(std::string email, std::string username, std::string pwd)
+{
+    std::string serverResponse;
+
+    QJsonObject json;
+    json.insert("email", QJsonValue::fromVariant(email.c_str()));
+    json.insert("username", QJsonValue::fromVariant(username.c_str()));
+    json.insert("password", QJsonValue::fromVariant(pwd.c_str()));
+
+    QJsonDocument doc(json);
+    std::string jsonStr = doc.toJson(QJsonDocument::Compact).toStdString();
+
+    // headers
+    SNEdebug(1, tkn);
+    struct curl_slist *hList = NULL;
+    const std::string header = "Authorization: Bearer " + tkn;
+    hList = curl_slist_append(hList, header.data());
+    hList = curl_slist_append(hList, "Content-Type: application/json");
+
+    curl_easy_setopt(curl, CURLOPT_URL, CHANGEUSER_ENDPOINT);
+    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, hList);
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonStr.c_str());
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &serverResponse);
+
+    res = curl_easy_perform(curl);
+    if(res != CURLE_OK) return curl_easy_strerror(res);
+    else SNEdebug(1, serverResponse);
+    curl_slist_free_all(hList);
+
+    // handle response
+    QJsonDocument response = QJsonDocument::fromJson(serverResponse.c_str());
+    if(!response.isObject()) return "invalid response";
+
+    SNEdebug(1, serverResponse);
+
+    QJsonObject obj = response.object();
+
+    std::string error = obj.value("error").toString().toStdString();
+    bool success = obj.value("success").toBool();
+    if(!success) return error;
+
+    return "successfully changed user";
 }
 
 std::string SNEconnection::createMeal(Meal m)
