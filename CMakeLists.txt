@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 project(SeekNEat VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_AUTOMOC ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Quick)
 
@@ -10,6 +11,9 @@ qt_standard_project_setup(REQUIRES 6.8)
 
 qt_add_executable(appSeekNEat
     main.cpp
+    btnHandler.cpp
+    textHandler.cpp
+    textController.cpp
     connection/connection.cpp
 )
 
@@ -28,6 +32,8 @@ qt_add_resources(appSeekNEat "resources"
         resources/imgtitle.png
         resources/searchicon.png
 )
+
+qt_generate_moc(main.cpp main.moc TARGET appSeekNEat)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

@@ -41,10 +41,7 @@ bool SNEconnection::init()
     return 0;
 }
 
-void SNEconnection::cleanup()
-{
-    curl_easy_cleanup(curl);
-}
+SNEconnection::~SNEconnection() { curl_easy_cleanup(curl); }
 
 std::string SNEconnection::login(std::string username, std::string pwd)
 {
@@ -95,6 +92,7 @@ std::string SNEconnection::login(std::string username, std::string pwd)
 
     if (tokenJob->error()) {
         SNEdebug(3, "Error Saving Token: " + tokenJob->errorString().toStdString());
+        return "token error";
     }
     else {
         SNEdebug(1, "Token stored successfully!");

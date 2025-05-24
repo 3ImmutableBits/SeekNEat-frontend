@@ -16,8 +16,9 @@ ApplicationWindow {
 
     title: "SeekNEat"
 
-    function check_login(){
-        return true;
+    function check_login() {
+        if(authController.text == "Successfully logged in") return true;
+        return false;
     }
     Material.theme: Material.Dark
 
@@ -176,6 +177,10 @@ ApplicationWindow {
                             border.width: 2
                             color: "#3385ff"
                         }
+
+                        onTextChanged: {
+                            textHandler.processUsername(text)
+                        }
                     }
                 }
 
@@ -210,6 +215,10 @@ ApplicationWindow {
                             border.color: passwordTextBox.activeFocus ? "#3399ff" : "#3385ff"
                             border.width: 2
                             color: "#3385ff"
+                        }
+
+                        onTextChanged: {
+                            textHandler.processEmail(text)
                         }
                     }
                 }
@@ -246,12 +255,23 @@ ApplicationWindow {
                             border.width: 2
                             color: "#3385ff"
                         }
+
+                        onTextChanged: {
+                            textHandler.processPwd(text)
+                        }
                     }
                 }
 
                 Column {
                     spacing: 20
                     anchors.horizontalCenter: parent.horizontalCenter
+
+                    Text {
+                        text: authController.text
+                        font.pixelSize: 17
+                        color: "white"
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
 
                     // Login Button
                     Loader {
@@ -269,6 +289,7 @@ ApplicationWindow {
                             item.textPressedColor = "white"
 
                             item.clicked.connect(() => {
+                                btnHandler.handleLoginBtn()
                                 if (check_login()) {
                                     stackView.push(dashboardPageComponent)
                                     item.normalColor = "#33cc33"
@@ -297,6 +318,7 @@ ApplicationWindow {
                             item.textPressedColor = "white"
 
                             item.clicked.connect(() => {
+                                btnHandler.handleRegisterBtn()
                                 console.log("Register clicked:", nameTextBox.text, gmailTextBox.text, passwordTextBox.text)
                             })
                         }
@@ -837,6 +859,10 @@ ApplicationWindow {
                             border.width: 2
                             color: "#3385ff"
                         }
+
+                        onTextChanged: {
+                            textHandler.processNewEmail(text)
+                        }
                     }
                 }
 
@@ -870,6 +896,10 @@ ApplicationWindow {
                             border.color: newPasswordTextBox.activeFocus ? "#3399ff" : "#3385ff"
                             border.width: 2
                             color: "#3385ff"
+                        }
+
+                        onTextChanged: {
+                            textHandler.processNewPwd(text)
                         }
                     }
                 }
@@ -905,6 +935,10 @@ ApplicationWindow {
                             border.width: 2
                             color: "#3385ff"
                         }
+
+                        onTextChanged: {
+                            textHandler.processNewUsername(text)
+                        }
                     }
                 }
 
@@ -923,13 +957,18 @@ ApplicationWindow {
                         item.textHoverColor = "white"
                         item.textPressedColor = "white"
                         item.clicked.connect(() => {
-                            // SAVE DATA
+                            btnHandler.handleUserEditBtn()
                             stackView.pop();
                         })
                     }
                 }
 
-
+                Text {
+                    text: editController.text
+                    font.pixelSize: 17
+                    color: "white"
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
             }
         }
     }

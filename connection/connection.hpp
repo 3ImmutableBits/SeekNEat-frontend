@@ -30,14 +30,13 @@ class SNEconnection
         CURL* curl;
         CURLcode res;
         std::string tkn;
+
+    public:
+        ~SNEconnection();
     
     public:
-
         // @brief Initializes the connection
         bool init();
-
-        // @brief Closes the connection, should be run upon app close
-        void cleanup();
 
         // @brief Sends account credentials to the server
         std::string login(std::string username, std::string pwd);

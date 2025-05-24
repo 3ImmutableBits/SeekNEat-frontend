@@ -1,11 +1,25 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 
 #include "debug.hpp"
 #include "connection/connection.hpp"
+#include "btnHandler.hpp"
+#include "textHandler.hpp"
+#include "textController.hpp"
+
+SNEconnection conn;
 
 int main(int argc, char *argv[])
 {
+    btnHandler Bhandler;
+    textHandler Thandler;
+    textController authController;
+    textController editController;
+
+    Bhandler.authCtl = &authController;
+    Bhandler.editCtl = &editController;
+
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
@@ -17,23 +31,12 @@ int main(int argc, char *argv[])
         Qt::QueuedConnection);
     engine.loadFromModule("SeekNEat", "Main");
 
-    SNEconnection conn;
     conn.init();
 
-    SNEdebug(1, conn.login("midair", "pwdpwdpwd"));
-    //SNEdebug(1, conn.signup("midair@midair.dev", "midair", "pwdpwdpwd"));
-    //SNEdebug(1, conn.createMeal("Bordura", "Bordura de pe DN1, gust placut de ciment", 10, 1.240260, 32.824854));
-    //SNEdebug(1, conn.joinMeal(1));
-    conn.deleteMeal(1);
-    auto res = conn.fetchMeals("dn2");
-    for(auto i : res)
-    {
-        SNEdebug(1, i.name);
-    }
-
-    //SNEdebug(1, conn.logout());
-
-    conn.cleanup();
+    engine.rootContext()->setContextProperty("btnHandler", &Bhandler);
+    engine.rootContext()->setContextProperty("textHandler", &Thandler);
+    engine.rootContext()->setContextProperty("authController", &authController);
+    engine.rootContext()->setContextProperty("editController", &editController);
 
     return app.exec();
 }
