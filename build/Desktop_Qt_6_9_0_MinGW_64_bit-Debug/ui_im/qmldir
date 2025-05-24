@@ -1,0 +1,5 @@
+module ui_im
+typeinfo appui_im.qmltypes
+prefer :/qt/qml/ui_im/
+Main 1.0 Main.qml
+

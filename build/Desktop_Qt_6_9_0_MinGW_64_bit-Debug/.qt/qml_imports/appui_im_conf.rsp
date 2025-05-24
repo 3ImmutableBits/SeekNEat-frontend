@@ -1,0 +1,14 @@
+-rootPath
+C:/Users/ancap/OneDrive/Documents/ui_im
+-cmake-output
+-output-file
+C:/Users/ancap/OneDrive/Documents/ui_im/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/.qt/qml_imports/appui_im_conf.cmake
+-importPath
+C:/Users/ancap/OneDrive/Documents/ui_im/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/ui_im
+-importPath
+C:/Users/ancap/OneDrive/Documents/ui_im/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug
+-importPath
+D:/Qt/6.9.0/mingw_64/qml
+-qrcFiles
+C:/Users/ancap/OneDrive/Documents/ui_im/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/.qt/rcc/qmake_ui_im.qrc
+C:/Users/ancap/OneDrive/Documents/ui_im/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/.qt/rcc/appui_im_raw_qml_0.qrc

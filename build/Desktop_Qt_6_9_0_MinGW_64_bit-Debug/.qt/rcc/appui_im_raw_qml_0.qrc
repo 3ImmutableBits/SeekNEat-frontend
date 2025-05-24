@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/qt/qml/ui_im/">
+    <file alias="Main.qml">C:/Users/ancap/OneDrive/Documents/ui_im/Main.qml</file>
+  </qresource>
+</RCC>
+
